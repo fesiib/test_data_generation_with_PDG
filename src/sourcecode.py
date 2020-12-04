@@ -11,9 +11,9 @@ class SourceCode:
         self.code = code
         self.path = path
 
-    def create_file(self):
+    def create_file(self) -> str:
         """
-        Creates file for the source code and returns path to that file
+        Creates a file for the source code and returns path to that file
 
         To be able to execute the code
         Assumption: code is in Java
@@ -29,6 +29,9 @@ class SourceCode:
         return self.path
 
     def delete_file(self):
+        """
+        Deletes a file with the source code
+        """
         if self.path is None:
             return
         os.remove(self.path)
