@@ -1,3 +1,11 @@
+def test():
+    from sourcecode import SourceCode
+
+    sc = SourceCode("lol,ekfafdsfsd\nsfsdfsdf")
+    sc.create_file()
+    sc.delete_file()
+
+
 def checker():
     from generator import Generator
     from coveragetable import CoverageTable
@@ -10,4 +18,4 @@ def checker():
 
 
 if __name__ == "__main__":
-    checker()
+    test()
