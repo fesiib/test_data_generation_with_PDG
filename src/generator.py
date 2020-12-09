@@ -59,8 +59,12 @@ class Generator:
         ipdg = IPDG(source_code)
         ct = CoverageTable(source_code)
 
-        ct.random_seed(self.seed_size)
 
+        # Random Seeding CT
+        random_seed = Population()
+        random_seed.initialize(self.seed_size)
+        ct.update(random_seed)        
+        
         dependency_mode = 0
 
         while True:
