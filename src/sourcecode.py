@@ -10,6 +10,7 @@ class SourceCode:
     def __init__(self, code: str = None, path: str = None):
         self.code = code
         self.path = path
+        self.created_by_program = False
 
     def create_file(self) -> str:
         """
@@ -21,7 +22,7 @@ class SourceCode:
 
         if self.path is None:
             filename = uuid.uuid4().hex + ".java"
-
+            self.created_by_program = True
             self.path = os.path.join(os.getcwd(), filename)
             with open(self.path, "w") as f:
                 f.write(self.code)
@@ -32,6 +33,6 @@ class SourceCode:
         """
         Deletes a file with the source code
         """
-        if self.path is None:
+        if self.path is None or self.created_by_program is False:
             return
         os.remove(self.path)
