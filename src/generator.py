@@ -45,6 +45,7 @@ class Generator:
         max_iter: int = const.DEF_MAX_ITER,
         wait_iter: int = const.DEF_WAIT_ITER,
         dependency_mode: int = const.DEF_DEPENDENCY_MODE,
+        test_type: int = const.DEF_TEST_TYPE,
     ):
         self.seed_size = seed_size
         self.population_size = population_size
@@ -53,6 +54,7 @@ class Generator:
         self.max_iter = max_iter
         self.wait_iter = wait_iter
         self.dependency_mode = dependency_mode
+        self.test_type = test_type
         self.validate_global_variables()
 
     def generate_tests(self, source_code: SourceCode):
@@ -62,7 +64,7 @@ class Generator:
 
         # Random Seeding CT
         random_seed = Population()
-        random_seed.initial_population(self.seed_size)
+        random_seed.initial_population(self.seed_size, self.test_type)
         ct.update(random_seed)        
 
         dependency_mode = 0
@@ -80,7 +82,7 @@ class Generator:
                 target, dependency_mode
             )
             cur_population = Population()
-            cur_population.initial_population(self.population_size)
+            cur_population.initial_population(self.population_size, self.test_type)
             ct.update(cur_population)
 
             generations_cnt += 1
