@@ -67,6 +67,9 @@ class Generator:
 
         dependency_mode = 0
 
+        #for Statistics
+        generations_cnt = 0
+
         while True:
             target: Predicate = ct.get_target_branch()
 
@@ -79,6 +82,8 @@ class Generator:
             cur_population = Population()
             cur_population.initial_population(self.population_size)
             ct.update(cur_population)
+
+            generations_cnt += 1
 
             iter_cnt = 0
             wait_iter = self.wait_iter
@@ -96,7 +101,7 @@ class Generator:
                     constraint
                 )
                 next_population.insert(best_solution)
-
+                generations_cnt += 1
                 while next_population.get_size() < self.population_size:
                     (parent1, parent2) = cur_population.tournament_selection()
                     offspring1: TestCase = parent1.copy()
@@ -113,7 +118,7 @@ class Generator:
                             offspring2, random.randint(0, 2)
                         )
                     next_population.insert(offspring1)
-                    if next.population.get_size() < self.population_size:
+                    if next_population.get_size() < self.population_size:
                         next_population.insert(offspring2)
 
                 next_best_fitness = next_population.get_best_by_fintess(
@@ -136,4 +141,6 @@ class Generator:
                     dependency_mode = 0
                 else:
                     dependency_mode += 1
+
+        #print(generations_cnt)
         return ct.get_tests()
