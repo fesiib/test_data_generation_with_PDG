@@ -62,9 +62,9 @@ class Generator:
 
         # Random Seeding CT
         random_seed = Population()
-        random_seed.initialize(self.seed_size)
+        random_seed.initial_population(self.seed_size)
         ct.update(random_seed)        
-        
+
         dependency_mode = 0
 
         while True:
@@ -77,7 +77,7 @@ class Generator:
                 target, dependency_mode
             )
             cur_population = Population()
-            cur_population.initialize(self.population_size)
+            cur_population.initial_population(self.population_size)
             ct.update(cur_population)
 
             iter_cnt = 0
