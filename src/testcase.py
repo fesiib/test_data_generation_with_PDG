@@ -82,14 +82,21 @@ class TestCase:
 
     def to_file(self, path, name = None):
         if os.path.exists(path) is False:
-            raise AssertionError
+            os.mkdir(path)
+            #raise AssertionError
         if name is None:
             name = "test" + uuid.uuid4().hex
         input_file = os.path.join(path, name + ".in")
         #output_file = os.path.join(path, name + ".out")
 
+        data = self.input
+
+        if self.test_type == 2:
+            data.insert(0, len(data))
+        
+
         with open(input_file, 'w') as f:
-            for i in self.input:
+            for i in data:
                 print(i, file=f)
         return input_file
 
