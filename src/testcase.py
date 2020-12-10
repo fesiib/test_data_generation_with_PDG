@@ -5,12 +5,16 @@ from sourcecode import SourceCode
 import random
 import os
 import uuid
+import subprocess
 
 class TestCase:
     def __init__(self, input: List[int] = None, output: List[int] = None, test_type: int = None):
         self.input = input
         self.output = output
         self.test_type = test_type
+        if test_type is not None:
+            self.generate_test(self.test_type)
+
 
     def get_input(self) -> List[int]:
         if self.input is None:
@@ -30,6 +34,7 @@ class TestCase:
         return self.test_type
 
     def generate_test(self, test_type: int):
+        self.test_type = test_type
         if test_type == 0:
             self.__generate(2)
         elif test_type == 1:
@@ -46,10 +51,32 @@ class TestCase:
 
     def execute_test_on(self, source_code: SourceCode):
         path = source_code.create_file()
-        input = self.input.copy()
+        input_data = self.input.copy()
         if self.test_type == 2:
-            input.insert(0, len(input))
+            input_data.insert(0, len(input_data))
+        
         #Execute with `path` and `input` (C++ or python)
+        
+        str_input_data = ""
+
+        for i in input_data:
+            str_input_data += str(i) + "\n"
+
+        process = subprocess.Popen(['python3', path], stdin = subprocess.PIPE, stdout = subprocess.PIPE, stderr = subprocess.PIPE)
+        
+        stdout, stderr = process.communicate(input = bytearray(str_input_data, 'utf-8'))
+        
+        if len(stderr) != 0:
+            print("Error is:" + stderr.decode("utf-8"))
+            raise AssertionError
+
+        str_output_data = stdout.decode("utf-8")
+        str_output_data = str_output_data.split("\n")
+        self.output = []
+        for x in str_output_data:
+            if x.isnumeric() is True:
+                self.output.append(int(x))
+
         source_code.delete_file()
 
     def to_file(self, path, name = None):
