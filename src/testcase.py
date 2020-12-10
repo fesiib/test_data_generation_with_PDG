@@ -1,6 +1,7 @@
 from typing import List
 
 from sourcecode import SourceCode
+from constraint import Constraint
 
 import random
 import os
@@ -91,6 +92,10 @@ class TestCase:
             for i in self.input:
                 print(i, file=f)
         return input_file
+
+    def get_fitness(self, constraint: Constraint) -> float:
+        return constraint.to_fitness(self.input)
+
 
 
 
