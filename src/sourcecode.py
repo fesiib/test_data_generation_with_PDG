@@ -21,7 +21,7 @@ class SourceCode:
         """
 
         if self.path is None:
-            filename = uuid.uuid4().hex + ".java"
+            filename = uuid.uuid4().hex + ".py"
             self.created_by_program = True
             self.path = os.path.join(os.getcwd(), filename)
             with open(self.path, "w") as f:
