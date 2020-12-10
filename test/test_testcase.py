@@ -29,8 +29,3 @@ def test_testcase_2():
 
     test.execute_test_on(sc)
     assert test.get_output() == [10]
-
-
-
-if __name__ == "__main__":
-    test_testcase_1()
