@@ -70,12 +70,26 @@ class CoverageTable:
         return ""
 
 
-def test_eases():
-    pdg = PDG("# tri import sys i = int(sys.argv[1]) j = int(sys.argv[2]) k = int(sys.argv[3]) if i <= 0 or j <= 0 or k <= 0: print(4) exit() tri = 0 if i == j: tri += 1 if i == k: tri += 2 if j == k: tri += 3 if tri == 0: if i + j < k or j + k < i or k + i < j: tri = 4 else: tri = 1 print(tri) exit() if tri > 3: tri = 3 elif tri == 1 and i + j > k: tri = 2 elif tri == 2 and i + k > j: tri = 2 elif tri == 3 and j + k > i: tri = 2 else: tri = 4 print(tri) exit()")
+def test_triangle_eases():
+    pdg = PDG("# tri import sys i = int(sys.argv[1]) j = int(sys.argv[2]) k = int(sys.argv[3]) if i <= 0 or j <= 0 or k <= 0: "
+              "print(4) exit() tri = 0 if i == j: tri += 1 if i == k: tri += 2 if j == k: tri += 3 if tri == 0: if i + j < k or "
+              "j + k < i or k + i < j: tri = 4 else: tri = 1 print(tri) exit() if tri > 3: tri = 3 elif tri == 1 and i + j > k: "
+              "tri = 2 elif tri == 2 and i + k > j: tri = 2 elif tri == 3 and j + k > i: tri = 2 else: tri = 4 print(tri) exit("
+              ")")
     cov_table = CoverageTable(pdg)
     P = Predicate(8, 30, "if tri == 1 and i + j > k", True, False)
     print(cov_table.calculate_ease(P, pdg))
     print(cov_table.calculate_improved_ease(P, pdg))
 
 
-test_eases()
+def test_find_max_eases():
+    pdg = PDG("# find_max import sys x = int(sys.argv[1]) y = int(sys.argv[2]) z = int(sys.argv[3]) if x > y: if x > z: print("
+              "x) else: print(z) else: if y < z: print(z) else: print(y)")
+    cov_table = CoverageTable(pdg)
+    P = Predicate(3, 12, "if x > z", True, False)
+    print(cov_table.calculate_ease(P, pdg))
+    print(cov_table.calculate_improved_ease(P, pdg))
+
+
+test_triangle_eases()
+test_find_max_eases()
