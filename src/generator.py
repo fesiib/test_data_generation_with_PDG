@@ -7,11 +7,11 @@ and should handle:
 """
 
 from population import Population
-from ipdg import IPDG
-from coveragetable import CoverageTable
+from PDG import PDG
+from CoverageTable import CoverageTable
 from sourcecode import SourceCode
 from testcase import TestCase
-from predicate import Predicate
+from Predicate import Predicate
 from constraint import Constraint
 
 import const
@@ -58,7 +58,7 @@ class Generator:
         self.validate_global_variables()
 
     def generate_tests(self, source_code: SourceCode):
-        ipdg = IPDG(source_code)
+        pdg = PDG(source_code)
         ct = CoverageTable(source_code)
 
 
@@ -78,7 +78,7 @@ class Generator:
             if target is None:
                 break
 
-            constraint: Constraint = ipdg.predicate_to_constraint(
+            constraint: Constraint = pdg.predicate_to_constraint(
                 target, dependency_mode
             )
             cur_population = Population()

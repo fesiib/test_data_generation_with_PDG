@@ -60,10 +60,10 @@ class CoverageTable:
         self.predicates.remove(predicate)
         return
 
-    def update(self, population, pdg):
+    def update(self, population):
         for test in population.solutions:
             for predicate in self.predicates:
-                if pdg.predicate_to_constraint().is_satisified(test.values):
+                if self.pdg.predicate_to_constraint(predicate, 1).is_satisified(test.values):
                     self.pdg.update(predicate)
                     self.predicates = []
                     for key in self.pdg.control_flow:
