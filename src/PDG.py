@@ -53,9 +53,7 @@ class PDG:
 	# to update a coverage status of predicate in pdg
 	def update(self, predicate):
 		tup = (predicate.number, predicate.program_line, predicate.predicate, predicate.branch, predicate.coverage_status)
-		new_predicate = predicate
-		new_predicate.coverage_status = True
-		new_tup = (new_predicate.number, new_predicate.program_line, new_predicate.predicate, new_predicate.branch, new_predicate.coverage_status)
+		new_tup = (predicate.number, predicate.program_line, predicate.predicate, predicate.branch, True)
 		value = self.control_flow[tup]
 		del self.control_flow[tup]
 		self.control_flow[new_tup] = value
