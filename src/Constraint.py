@@ -15,8 +15,10 @@ class Constraint:
 			cnt += 1
 		return test in self.constraint.getSolutions()
 
-	def constraint_to_fitness(self):
-		pass
+	def constraint_to_fitness(self, values):
+		if self.is_satisfied(values):
+			return 1
+		return 0
 
 
 def test_constraint():
