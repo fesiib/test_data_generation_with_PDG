@@ -1,5 +1,8 @@
 from Predicate import Predicate
 from Constraint import Constraint
+from constraint import *
+inf = 50
+
 
 class PDG:
 	# maps of (Tuple - (List[Tuple], List[Tuple])) because Predicate type couldn't be hashed
@@ -69,7 +72,12 @@ class PDG:
 		constraint = ""
 		if mode == 1:
 			if predicate.program_line == "8":
-				constraint = Constraint("i <= 0 or j <= 0 or k <= 0")
+				# constraint = Constraint("i <= 0 or j <= 0 or k <= 0")
+				constraint = Problem()
+				constraint.addVariable("i", range(-inf, inf))
+				constraint.addVariable("j", range(-inf, inf))
+				constraint.addVariable("k", range(-inf, inf))
+				constraint.addConstraint(lambda i, j, k: i <= 0 or j <= 0 or k <= 0, ("i", "j", "k"))
 			if predicate.program_line == "13":
 				constraint = Constraint("i == j")
 			if predicate.program_line == "15":
