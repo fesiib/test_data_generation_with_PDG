@@ -1,7 +1,6 @@
-from Predicate import Predicate
-from Constraint import Constraint
+from CustomConstraint import CustomConstraint
 from constraint import *
-inf = 50
+inf = 10
 
 
 class PDG:
@@ -47,7 +46,6 @@ class PDG:
 				P32: ([], [P34]),
 				P34: ([], []),
 			}
-			# create data flow!
 			self.data_flow = {}
 
 	# to update a coverage status of predicate in pdg
@@ -69,50 +67,51 @@ class PDG:
 	def predicate_to_constraint(self, predicate, mode):
 		constraint = ""
 		if mode == 1:
-			if predicate.program_line == "8":
-				# constraint = Constraint("i <= 0 or j <= 0 or k <= 0")
-				constraint = Problem()
-				constraint.addVariable("i", range(-inf, inf))
-				constraint.addVariable("j", range(-inf, inf))
-				constraint.addVariable("k", range(-inf, inf))
-				constraint.addConstraint(lambda i, j, k: i <= 0 or j <= 0 or k <= 0, ("i", "j", "k"))
+			if predicate.program_line == 8:
+				# constraint = CustomConstraint("i <= 0 or j <= 0 or k <= 0")
+				c = Problem()
+				c.addVariable("i", range(-inf, inf))
+				c.addVariable("j", range(-inf, inf))
+				c.addVariable("k", range(-inf, inf))
+				c.addConstraint(lambda i, j, k: i <= 0 or j <= 0 or k <= 0, ("i", "j", "k"))
+				constraint = CustomConstraint(c)
 			if predicate.program_line == "13":
-				constraint = Constraint("i == j")
+				constraint = CustomConstraint("i == j")
 			if predicate.program_line == "15":
-				constraint = Constraint("i == k")
+				constraint = CustomConstraint("i == k")
 			if predicate.program_line == "17":
-				constraint = Constraint("j == k")
+				constraint = CustomConstraint("j == k")
 			if predicate.program_line == "20":
-				constraint = Constraint("tri == 0")
+				constraint = CustomConstraint("tri == 0")
 			if predicate.program_line == "21":
-				constraint = Constraint("i + j < k or j + k < i or k + i < j")
+				constraint = CustomConstraint("i + j < k or j + k < i or k + i < j")
 			if predicate.program_line == "28":
-				constraint = Constraint("tri > 3")
+				constraint = CustomConstraint("tri > 3")
 			if predicate.program_line == "30":
-				constraint = Constraint("tri == 1 and i + j > k")
+				constraint = CustomConstraint("tri == 1 and i + j > k")
 			if predicate.program_line == "32":
-				constraint = Constraint("tri == 2 and i + k > j")
+				constraint = CustomConstraint("tri == 2 and i + k > j")
 			if predicate.program_line == "34":
-				constraint = Constraint("tri == 3 and j + k > i")
+				constraint = CustomConstraint("tri == 3 and j + k > i")
 		if mode == 2:
 			if predicate.program_line == "8":
-				constraint = Constraint("i <= 0 or j <= 0 or k <= 0")
+				constraint = CustomConstraint("i <= 0 or j <= 0 or k <= 0")
 			if predicate.program_line == "13":
-				constraint = Constraint("i > 0 and j > 0 and k > 0 and i == j")
+				constraint = CustomConstraint("i > 0 and j > 0 and k > 0 and i == j")
 			if predicate.program_line == "15":
-				constraint = Constraint("i > 0 and j > 0 and k > 0 and i == k")
+				constraint = CustomConstraint("i > 0 and j > 0 and k > 0 and i == k")
 			if predicate.program_line == "17":
-				constraint = Constraint("i > 0 and j > 0 and k > 0 and j == k")
+				constraint = CustomConstraint("i > 0 and j > 0 and k > 0 and j == k")
 			if predicate.program_line == "20":
-				constraint = Constraint("i > 0 and j > 0 and k > 0 and tri == 0")
+				constraint = CustomConstraint("i > 0 and j > 0 and k > 0 and tri == 0")
 			if predicate.program_line == "21":
-				constraint = Constraint("i > 0 and j > 0 and k > 0 and tri == 0 and (i + j < k or j + k < i or k + i < j)")
+				constraint = CustomConstraint("i > 0 and j > 0 and k > 0 and tri == 0 and (i + j < k or j + k < i or k + i < j)")
 			if predicate.program_line == "28":
-				constraint = Constraint("i > 0 and j > 0 and k > 0 and i == j and j == k and tri > 3")
+				constraint = CustomConstraint("i > 0 and j > 0 and k > 0 and i == j and j == k and tri > 3")
 			if predicate.program_line == "30":
-				constraint = Constraint("i > 0 and j > 0 and k > 0 and tri == 1 and i + j > k")
+				constraint = CustomConstraint("i > 0 and j > 0 and k > 0 and tri == 1 and i + j > k")
 			if predicate.program_line == "32":
-				constraint = Constraint("i > 0 and j > 0 and k > 0 and tri == 2 and i + k > j")
+				constraint = CustomConstraint("i > 0 and j > 0 and k > 0 and tri == 2 and i + k > j")
 			if predicate.program_line == "34":
-				constraint = Constraint("i > 0 and j > 0 and k > 0 and tri == 3 and j + k > i")
+				constraint = CustomConstraint("i > 0 and j > 0 and k > 0 and tri == 3 and j + k > i")
 		return constraint

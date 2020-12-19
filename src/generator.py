@@ -12,7 +12,7 @@ from CoverageTable import CoverageTable
 from sourcecode import SourceCode
 from testcase import TestCase
 from Predicate import Predicate
-from constraint import Constraint
+from CustomConstraint import CustomConstraint
 
 import const
 from typing import List
@@ -78,7 +78,7 @@ class Generator:
             if target is None:
                 break
 
-            constraint: Constraint = pdg.predicate_to_constraint(
+            constraint: CustomConstraint = pdg.predicate_to_constraint(
                 target, dependency_mode
             )
             cur_population = Population()

@@ -11,6 +11,7 @@ def test_testcase_1():
 
     assert test.get_output() == [2]
 
+
 def test_testcase_2():
     from sourcecode import SourceCode
     from testcase import TestCase
@@ -30,11 +31,11 @@ def test_testcase_2():
     test.execute_test_on(sc)
     assert test.get_output() == [10]
 
+
 def test_testcase_3():
     from testcase import TestCase
 
     test = TestCase(input = [12, 12], test_type=0)
 
     print(test.to_file("./cheburek", name = "generated_test"))
-
 
