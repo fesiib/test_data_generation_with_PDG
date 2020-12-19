@@ -49,10 +49,11 @@ class CoverageTable:
             if not predicate.coverage_status:
                 ease = self.calculate_ease(predicate)
                 minus_improved = -self.calculate_improved_ease(predicate)
-                metrics[predicate] = (ease, minus_improved)
+                t = (predicate.number, predicate.program_line, predicate.predicate, predicate.branch, predicate.coverage_status)
+                metrics[t] = (ease, minus_improved)
         if len(metrics) > 0:
             sorted_predicates = sorted(metrics, key=metrics.get)
-            return sorted_predicates[0]
+            return Predicate(sorted_predicates[0][0], sorted_predicates[0][1], sorted_predicates[0][2], sorted_predicates[0][3], sorted_predicates[0][4])
         else:
             return None
 
@@ -63,7 +64,7 @@ class CoverageTable:
     def update(self, population):
         for test in population.solutions:
             for predicate in self.predicates:
-                if self.pdg.predicate_to_constraint(predicate, 1).is_satisified(test.values):
+                if self.pdg.predicate_to_constraint(predicate, 2).is_satisified(test.values):
                     self.pdg.update(predicate)
                     self.predicates = []
                     for key in self.pdg.control_flow:
@@ -98,5 +99,19 @@ def test_find_max_eases():
     print(cov_table.calculate_improved_ease(P))
 
 
-test_triangle_eases()
-test_find_max_eases()
+def test():
+    cov_table = CoverageTable("# tri import sys i = int(sys.argv[1]) j = int(sys.argv[2]) k = int(sys.argv[3]) if i <= 0 or j <= 0 or k <= 0: "
+        "print(4) exit() tri = 0 if i == j: tri += 1 if i == k: tri += 2 if j == k: tri += 3 if tri == 0: if i + j < k or "
+        "j + k < i or k + i < j: tri = 4 else: tri = 1 print(tri) exit() if tri > 3: tri = 3 elif tri == 1 and i + j > k: "
+        "tri = 2 elif tri == 2 and i + k > j: tri = 2 elif tri == 3 and j + k > i: tri = 2 else: tri = 4 print(tri) exit("
+        ")")
+    P = Predicate(1, 8, "if i <= 0 or j <= 0 or k <= 0", True, True)
+    print(cov_table.get_target_branch().program_line)
+    c = cov_table.pdg.predicate_to_constraint(P, 1)
+    values = [9, 8, 2]
+    print(c.to_fitness(values))
+
+
+# test_triangle_eases()
+# test_find_max_eases()
+test()

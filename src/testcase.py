@@ -1,7 +1,7 @@
 from typing import List
 
 from sourcecode import SourceCode
-from constraint import Constraint
+from CustomConstraint import CustomConstraint
 
 import random
 import os
@@ -100,7 +100,7 @@ class TestCase:
                 print(i, file=f)
         return input_file
 
-    def get_fitness(self, constraint: Constraint) -> float:
+    def get_fitness(self, constraint: CustomConstraint) -> float:
         return constraint.to_fitness(self.input)
 
 
