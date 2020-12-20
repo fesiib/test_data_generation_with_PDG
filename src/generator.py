@@ -100,13 +100,13 @@ class Generator:
                 next_population = Population()
 
                 # Best Solution Survives
-                best_solution: TestCase = cur_population.get_best_by_fintess(
+                best_solution: TestCase = cur_population.get_best_by_fitness(
                     constraint
                 )
                 next_population.insert(best_solution)
                 generations_cnt += 1
                 while next_population.get_size() < self.population_size:
-                    (parent1, parent2) = cur_population.tournament_selection()
+                    parent1, parent2 = cur_population.tournament_selection(constraint)
                     offspring1: TestCase = parent1.copy()
                     offspring2: TestCase = parent2.copy()
                     if random.random() <= self.rate_crossover:
@@ -124,7 +124,7 @@ class Generator:
                     if next_population.get_size() < self.population_size:
                         next_population.insert(offspring2)
 
-                next_best_fitness = next_population.get_best_by_fintess(
+                next_best_fitness = next_population.get_best_by_fitness(
                     constraint
                 ).get_fitness(constraint)
 

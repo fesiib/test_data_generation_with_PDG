@@ -15,7 +15,7 @@ def test():
 def checker():
     from generator import Generator
     from coveragetable import CoverageTable
-    from sourcode import SourceCode
+    from sourcecode import SourceCode
 
     example = ""
     program = SourceCode(example)

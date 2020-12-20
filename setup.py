@@ -56,6 +56,7 @@ setup(
     ],
     install_requires=[
         "python-constraint",
+        "pytest",
         #'clint',
         #'lxml',
         #'psycopg2',
