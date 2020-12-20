@@ -1,5 +1,5 @@
 import pytest
-from customConstraint import CustomConstraint
+from customconstraint import CustomConstraint
 
 from constraint import Problem
 
