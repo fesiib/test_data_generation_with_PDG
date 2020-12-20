@@ -1,27 +1,32 @@
 from typing import List
 
 from sourcecode import SourceCode
-from CustomConstraint import CustomConstraint
+from customConstraint import CustomConstraint
 
 import random
 import os
 import uuid
 import subprocess
 
+
 class TestCase:
-    def __init__(self, input: List[int] = None, output: List[int] = None, test_type: int = None):
+    def __init__(
+        self,
+        input: List[int] = None,
+        output: List[int] = None,
+        test_type: int = None,
+    ):
         self.input = input
         self.output = output
         self.test_type = test_type
-        if test_type is not None:
+        if test_type is not None and self.input is None:
             self.generate_test(self.test_type)
-
 
     def get_input(self) -> List[int]:
         if self.input is None:
-            return list()
+            self.generate_test(self.get_test_type())
         return self.input
-    
+
     def get_output(self) -> List[int]:
         if self.output is None:
             if self.input is None:
@@ -43,7 +48,7 @@ class TestCase:
         elif test_type == 2:
             self.__generate(10)
         else:
-            raise AssertionError
+            raise NotImplementedError
 
     def __generate(self, n: int):
         self.input = list()
@@ -55,18 +60,25 @@ class TestCase:
         input_data = self.input.copy()
         if self.test_type == 2:
             input_data.insert(0, len(input_data))
-        
-        #Execute with `path` and `input` (C++ or python)
-        
+
+        # Execute with `path` and `input` (C++ or python)
+
         str_input_data = ""
 
         for i in input_data:
             str_input_data += str(i) + "\n"
 
-        process = subprocess.Popen(['python3', path], stdin = subprocess.PIPE, stdout = subprocess.PIPE, stderr = subprocess.PIPE)
-        
-        stdout, stderr = process.communicate(input = bytearray(str_input_data, 'utf-8'))
-        
+        process = subprocess.Popen(
+            ["python3", path],
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+
+        stdout, stderr = process.communicate(
+            input=bytearray(str_input_data, "utf-8")
+        )
+
         if len(stderr) != 0:
             print("Error is:" + stderr.decode("utf-8"))
             raise AssertionError
@@ -80,30 +92,24 @@ class TestCase:
 
         source_code.delete_file()
 
-    def to_file(self, path, name = None):
+    def to_file(self, path, name=None):
         if os.path.exists(path) is False:
             os.mkdir(path)
-            #raise AssertionError
+            # raise AssertionError
         if name is None:
             name = "test" + uuid.uuid4().hex
         input_file = os.path.join(path, name + ".in")
-        #output_file = os.path.join(path, name + ".out")
+        # output_file = os.path.join(path, name + ".out")
 
         data = self.input
 
         if self.test_type == 2:
             data.insert(0, len(data))
-        
 
-        with open(input_file, 'w') as f:
+        with open(input_file, "w") as f:
             for i in data:
                 print(i, file=f)
         return input_file
 
     def get_fitness(self, constraint: CustomConstraint) -> float:
-        return constraint.to_fitness(self.input)
-
-
-
-
-
+        return constraint.to_fitness(self.output)

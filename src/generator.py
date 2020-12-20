@@ -7,12 +7,12 @@ and should handle:
 """
 
 from population import Population
-from PDG import PDG
-from CoverageTable import CoverageTable
+from pdg import PDG
+from coverageTable import CoverageTable
 from sourcecode import SourceCode
 from testcase import TestCase
 from Predicate import Predicate
-from CustomConstraint import CustomConstraint
+from customConstraint import CustomConstraint
 
 import const
 from typing import List
@@ -61,15 +61,14 @@ class Generator:
         pdg = PDG(source_code)
         ct = CoverageTable(source_code)
 
-
         # Random Seeding CT
         random_seed = Population()
         random_seed.initial_population(self.seed_size, self.test_type)
-        ct.update(random_seed)        
+        ct.update(random_seed)
 
         dependency_mode = 0
 
-        #for Statistics
+        # for Statistics
         generations_cnt = 0
 
         while True:
@@ -82,7 +81,9 @@ class Generator:
                 target, dependency_mode
             )
             cur_population = Population()
-            cur_population.initial_population(self.population_size, self.test_type)
+            cur_population.initial_population(
+                self.population_size, self.test_type
+            )
             ct.update(cur_population)
 
             generations_cnt += 1
@@ -99,13 +100,13 @@ class Generator:
                 next_population = Population()
 
                 # Best Solution Survives
-                best_solution: TestCase = cur_population.get_best_by_fintess(
+                best_solution: TestCase = cur_population.get_best_by_fitness(
                     constraint
                 )
                 next_population.insert(best_solution)
                 generations_cnt += 1
                 while next_population.get_size() < self.population_size:
-                    (parent1, parent2) = cur_population.tournament_selection()
+                    parent1, parent2 = cur_population.tournament_selection(constraint)
                     offspring1: TestCase = parent1.copy()
                     offspring2: TestCase = parent2.copy()
                     if random.random() <= self.rate_crossover:
@@ -123,7 +124,7 @@ class Generator:
                     if next_population.get_size() < self.population_size:
                         next_population.insert(offspring2)
 
-                next_best_fitness = next_population.get_best_by_fintess(
+                next_best_fitness = next_population.get_best_by_fitness(
                     constraint
                 ).get_fitness(constraint)
 
@@ -144,5 +145,5 @@ class Generator:
                 else:
                     dependency_mode += 1
 
-        #print(generations_cnt)
+        # print(generations_cnt)
         return ct.get_tests()

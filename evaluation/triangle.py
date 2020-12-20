@@ -15,7 +15,7 @@ def classify(i, j, k):
         else:
             tri = 1
         return tri
-    
+
     if tri > 3:
         tri = 3
     elif tri == 1 and (i + j > k):
@@ -24,7 +24,7 @@ def classify(i, j, k):
         tri = 2
     elif tri == 3 and (j + k > i):
         tri = 2
-    else: 
+    else:
         tri = 4
     return tri
 
@@ -33,17 +33,18 @@ def main():
     a = int(input())
     b = int(input())
     c = int(input())
-    
+
     t = classify(a, b, c)
 
-    if (t == 1):
+    if t == 1:
         print("scalene")
-    if (t == 2):
+    if t == 2:
         print("isosceles")
-    if (t == 3):
+    if t == 3:
         print("equilateral")
-    if (t == 4):
+    if t == 4:
         print("not a triangle")
+
 
 if __name__ == "__main__":
     main()
