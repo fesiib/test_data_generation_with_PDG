@@ -13,7 +13,7 @@ class PDG:
     data_flow = {}
 
     def __init__(self, source_code):
-        if source_code[2:5] == "fin":
+        if source_code.code[2:5] == "fin":
             P8 = (1, 8, "if x > y", True, True)
             P9 = (2, 9, "if y > z", True, False)
             P12 = (3, 12, "if x > z", True, False)
@@ -27,7 +27,7 @@ class PDG:
                 P20: ([], []),
             }
             self.data_flow = {}
-        if source_code[2:5] == "tri":
+        if source_code.code[2:5] == "tri":
             P8 = (1, 8, "if i <= 0 or j <= 0 or k <= 0", True, True)
             P13 = (2, 13, "if i == j", True, False)
             P15 = (3, 15, "if i == k", True, False)

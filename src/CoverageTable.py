@@ -1,6 +1,11 @@
 from predicate import Predicate
 from pdg import PDG
 
+"""
+TODO: change drop predicate
+
+"""
+
 
 class CoverageTable:
     predicates = []
@@ -107,6 +112,13 @@ class CoverageTable:
 
     def get_tests(self):
         return self.tests
+
+    def calculate_coverage(self):
+        covered = 0
+        for predicate in self.predicates:
+            if predicate.get_coverage_status():
+                covered += 1
+        return float(covered) / float(len(self.predicates)) * 100
 
     def __str__(self):
         ret_str = ""

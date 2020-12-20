@@ -11,6 +11,7 @@ class Population():
         self.solutions = solutions
 
     def initial_population(self, population_size: int, test_type: int):
+        self.solutions = []
         for _ in range(population_size):
             test = TestCase(test_type=test_type)
             self.solutions.append(test)

@@ -18,3 +18,12 @@ DEF_INF = math.inf
 2 - #ints, [int, int, ... int]
 """
 DEF_TEST_TYPE = 0
+
+
+SEED_SIZES = [10, 30, 50]
+POP_SIZES = [20, 50, 100]
+RATES_CROSSOVER = [0.1, 0.2, 0.4]
+RATES_MUTATION = [0.1, 0.2, 0.4]
+MAX_ITERS = [20, 50, 100]
+WAIT_ITERS = [5, 10, 20]
+DEPENDENCY_MODES = [1, 2, 3]

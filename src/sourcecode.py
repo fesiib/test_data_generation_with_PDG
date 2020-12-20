@@ -10,7 +10,16 @@ class SourceCode:
     def __init__(self, code: str = None, path: str = None):
         self.code = code
         self.path = path
+        if self.path is not None:
+            self.read_file()
+            print(self.code)
         self.created_by_program = False
+    
+    def read_file(self):
+        if self.path is None:
+            return AssertionError
+        with open(self.path, "r") as f:
+            self.code = f.read()
 
     def create_file(self) -> str:
         """

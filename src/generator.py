@@ -11,7 +11,7 @@ from pdg import PDG
 from coverageTable import CoverageTable
 from sourcecode import SourceCode
 from testcase import TestCase
-from Predicate import Predicate
+from predicate import Predicate
 from customConstraint import CustomConstraint
 
 import const
@@ -146,4 +146,4 @@ class Generator:
                     dependency_mode += 1
 
         # print(generations_cnt)
-        return ct.get_tests()
+        return ct, generations_cnt
