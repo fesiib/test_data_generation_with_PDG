@@ -6,7 +6,8 @@ import const
 import random
 import copy
 
-class Population():
+
+class Population:
     def __init__(self, solutions: List[TestCase] = None):
         self.solutions = solutions
 
@@ -18,22 +19,30 @@ class Population():
 
     def mutate(self, solution: TestCase, mode: int) -> TestCase:
         offspring = copy.deepcopy(solution)
-        offspring[random.randint(0, len(solution) - 1)] = random.randint(0, 10000)
+        offspring[random.randint(0, len(solution) - 1)] = random.randint(
+            0, 10000
+        )
 
         return offspring
 
-    def crossover(self, parent_1: TestCase, parent_2: TestCase) -> Tuple[TestCase]:
+    def crossover(
+        self, parent_1: TestCase, parent_2: TestCase
+    ) -> Tuple[TestCase]:
         crossover_point = random.choice(range(len(parent_1)))
         offspring_1 = parent_1[:crossover_point] + parent_2[crossover_point:]
         offspring_2 = parent_2[:crossover_point] + parent_1[crossover_point:]
 
         return offspring_1, offspring_2
 
-    def tournament_selection(self, constraint: CustomConstraint) -> Tuple[TestCase]:
+    def tournament_selection(
+        self, constraint: CustomConstraint
+    ) -> Tuple[TestCase]:
         parents = [None, None]
         for i in range(2):
             candidate_1, candidate_2 = random.choices(self.solutions)
-            if candidate_1.get_fitness(constraint) < candidate_2.to_fitness(constraint):
+            if candidate_1.get_fitness(constraint) < candidate_2.to_fitness(
+                constraint
+            ):
                 parent = candidate_1
             else:
                 parent = candidate_2

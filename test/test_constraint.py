@@ -13,5 +13,5 @@ def test_constraint():
     C = CustomConstraint(c)
     values1 = [-1, -1, -1]
     values2 = [9, 8, 2]
-    assert(C.to_fitness(values1) == 9963.0)
-    assert(C.to_fitness(values2) == 12349.0)
+    assert C.to_fitness(values1) == 9963.0
+    assert C.to_fitness(values2) == 12349.0

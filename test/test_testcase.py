@@ -1,5 +1,6 @@
 import pytest
 
+
 def test_testcase_1():
     from sourcecode import SourceCode
     from testcase import TestCase
@@ -37,5 +38,5 @@ def test_testcase_3():
     from testcase import TestCase
 
     test = TestCase(input=[12, 12], test_type=0)
-    assert(test.get_input() == [12, 12])
-    #print(test.to_file("./cheburek", name="generated_test"))
+    assert test.get_input() == [12, 12]
+    # print(test.to_file("./cheburek", name="generated_test"))

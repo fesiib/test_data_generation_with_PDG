@@ -3,6 +3,7 @@ import pytest
 from coverageTable import CoverageTable
 from predicate import Predicate
 
+
 def test_triangle_eases():
     cov_table = CoverageTable(
         "# tri import sys i = int(sys.argv[1]) j = int(sys.argv[2]) k = int(sys.argv[3]) if i <= 0 or j <= 0 or k <= 0: "
@@ -12,8 +13,8 @@ def test_triangle_eases():
         ")"
     )
     P = Predicate(8, 30, "if tri == 1 and i + j > k", True, False)
-    assert(cov_table.calculate_ease(P) == 3)
-    assert(cov_table.calculate_improved_ease(P) == 6)
+    assert cov_table.calculate_ease(P) == 3
+    assert cov_table.calculate_improved_ease(P) == 6
 
 
 def test_find_max_eases():
@@ -22,8 +23,8 @@ def test_find_max_eases():
         "x) else: print(z) else: if y < z: print(z) else: print(y)"
     )
     P = Predicate(2, 9, "if y > z", True, False)
-    assert(cov_table.calculate_ease(P) == 1)
-    assert(cov_table.calculate_improved_ease(P) == 1)
+    assert cov_table.calculate_ease(P) == 1
+    assert cov_table.calculate_improved_ease(P) == 1
 
 
 def test_general():
@@ -35,7 +36,7 @@ def test_general():
         ")"
     )
     P = Predicate(1, 8, "if i <= 0 or j <= 0 or k <= 0", True, True)
-    assert(cov_table.get_target_branch().program_line == 20)
+    assert cov_table.get_target_branch().program_line == 20
     c = cov_table.pdg.predicate_to_constraint(P, 1)
     values = [9, 8, 2]
-    assert(c.to_fitness(values) == 829.0)
+    assert c.to_fitness(values) == 829.0

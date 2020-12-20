@@ -106,7 +106,9 @@ class Generator:
                 next_population.insert(best_solution)
                 generations_cnt += 1
                 while next_population.get_size() < self.population_size:
-                    parent1, parent2 = cur_population.tournament_selection(constraint)
+                    parent1, parent2 = cur_population.tournament_selection(
+                        constraint
+                    )
                     offspring1: TestCase = parent1.copy()
                     offspring2: TestCase = parent2.copy()
                     if random.random() <= self.rate_crossover:

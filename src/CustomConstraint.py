@@ -23,6 +23,8 @@ class CustomConstraint:
         for solution in solutions_iterator:
             cur_fitness = 0.0
             for key in solution.keys():
-                cur_fitness += (test[key] - solution[key]) * (test[key] - solution[key])
+                cur_fitness += (test[key] - solution[key]) * (
+                    test[key] - solution[key]
+                )
             fitness = min(fitness, cur_fitness)
         return cur_fitness
