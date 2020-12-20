@@ -1,5 +1,6 @@
 from Predicate import Predicate
 from PDG import PDG
+from testcase import TestCase
 
 
 class CoverageTable:
@@ -62,14 +63,14 @@ class CoverageTable:
         return
 
     def update(self, population):
-        for test in population.solutions:
+        for tst in population.solutions:
             for predicate in self.predicates:
-                if self.pdg.predicate_to_constraint(predicate, 2).is_satisified(test.values):
+                if self.pdg.predicate_to_constraint(predicate, 2).is_satisified(tst.values):
                     self.pdg.update(predicate)
                     self.predicates = []
                     for key in self.pdg.control_flow:
                         self.predicates.append(Predicate(key[0], key[1], key[2], key[3], key[4]))
-                    self.tests[predicate] = test
+                    self.tests[predicate] = tst
 
     def get_tests(self):
         return self.tests
@@ -105,11 +106,14 @@ def test():
         "j + k < i or k + i < j: tri = 4 else: tri = 1 print(tri) exit() if tri > 3: tri = 3 elif tri == 1 and i + j > k: "
         "tri = 2 elif tri == 2 and i + k > j: tri = 2 elif tri == 3 and j + k > i: tri = 2 else: tri = 4 print(tri) exit("
         ")")
-    P = Predicate(1, 8, "if i <= 0 or j <= 0 or k <= 0", True, True)
-    print(cov_table.get_target_branch().program_line)
-    c = cov_table.pdg.predicate_to_constraint(P, 1)
-    values = [9, 8, 2]
+    p = cov_table.get_target_branch()
+    c = cov_table.pdg.predicate_to_constraint(p, 1)
+    values = [9, 8, 2, 0]
     print(c.to_fitness(values))
+    # test_case = TestCase(values)
+    # population = Population(test_case)
+    # cov_table.update([test_case])
+    # print(cov_table.predicates)
 
 
 # test_triangle_eases()
