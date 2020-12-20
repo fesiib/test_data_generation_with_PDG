@@ -1,8 +1,10 @@
 from typing import List, Tuple
 from testcase import TestCase
+from customConstraint import CustomConstraint
 
 import random
 import copy
+import math
 
 class Population():
     def __init__(self, solutions: List[TestCase] = None):
@@ -11,7 +13,7 @@ class Population():
     def initial_population(self, population_size: int, test_type: int):
         for _ in range(population_size):
             test = TestCase(test_type=test_type)
-            self.solutions.append(test.get_input())
+            self.solutions.append(test)
 
     def mutate(self, solution: TestCase, mode: int) -> TestCase:
         offspring = copy.deepcopy(solution)
@@ -26,11 +28,11 @@ class Population():
 
         return offspring_1, offspring_2
 
-    def tournament_selection(self) -> Tuple[TestCase]:
+    def tournament_selection(self, constraint: CustomConstraint) -> Tuple[TestCase]:
         parents = []
         for _ in range(2):
             candidate_1, candidate_2 = random.choices(self.solutions)
-            if candidate_1.get_fitness() > candidate_2.get_fitness():
+            if candidate_1.get_fitness(constraint) < candidate_2.to_fitness(constraint):
                 parent = candidate_1
             else:
                 parent = candidate_2
@@ -42,11 +44,11 @@ class Population():
         return len(self.solutions)
 
     def get_best_by_fitness(self) -> TestCase:
-        best_fitness = 0.0
+        best_fitness = math.inf
         best = None
         for test in self.solutions:
             current_fitness = test.get_fitness()
-            if current_fitness > best_fitness:
+            if current_fitness < best_fitness:
                 best_fitness = current_fitness
                 best = test
 
