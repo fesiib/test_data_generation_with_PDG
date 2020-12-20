@@ -13,9 +13,13 @@ class Predicate:
         self.predicate = predicate
         self.branch = branch
         self.coverage_status = coverage_status
+        self.dropped = False
 
     def get_coverage_status(self):
         return self.coverage_status
+
+    def is_dropped(self):
+        return self.dropped
 
     def __eq__(self, other):
         ans = True

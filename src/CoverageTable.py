@@ -95,6 +95,8 @@ class CoverageTable:
 
     def drop_predicate(self, predicate):
         self.predicates.remove(predicate)
+        predicate.dropped = True
+        self.predicates.append(predicate)
 
     def update(self, population):
         for test in population.solutions:
