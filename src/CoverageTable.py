@@ -70,7 +70,7 @@ class CoverageTable:
     def get_target_branch(self):
         metrics = {}
         for predicate in self.predicates:
-            if not predicate.coverage_status:
+            if not predicate.coverage_status and not predicate.dropped:
                 ease = self.calculate_ease(predicate)
                 minus_improved = -self.calculate_improved_ease(predicate)
                 t = (
