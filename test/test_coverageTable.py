@@ -1,6 +1,6 @@
 import pytest
 
-from coverageTable import CoverageTable
+from coveragetable import CoverageTable
 from predicate import Predicate
 
 
@@ -38,5 +38,5 @@ def test_general():
     P = Predicate(1, 8, "if i <= 0 or j <= 0 or k <= 0", True, True)
     assert cov_table.get_target_branch().program_line == 20
     c = cov_table.pdg.predicate_to_constraint(P, 1)
-    values = [9, 8, 2]
-    assert c.to_fitness(values) == 829.0
+    values = [9, 8, 2, 0]
+    assert c.to_fitness(values) == 4.0

@@ -11,6 +11,7 @@ DEF_MAX_ITER = 100
 DEF_WAIT_ITER = 20
 DEF_DEPENDENCY_MODE = 3
 DEF_INF = math.inf
+DEF_DOM = 10
 
 """
 0 - [int, int]
