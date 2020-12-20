@@ -1,4 +1,4 @@
-from customConstraint import CustomConstraint
+from customconstraint import CustomConstraint
 from constraint import *
 
 inf = 10

@@ -1,7 +1,7 @@
 from typing import List
 
 from sourcecode import SourceCode
-from customConstraint import CustomConstraint
+from customconstraint import CustomConstraint
 
 import random
 import os

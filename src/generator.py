@@ -8,11 +8,11 @@ and should handle:
 
 from population import Population
 from pdg import PDG
-from coverageTable import CoverageTable
+from coveragetable import CoverageTable
 from sourcecode import SourceCode
 from testcase import TestCase
 from predicate import Predicate
-from customConstraint import CustomConstraint
+from customconstraint import CustomConstraint
 
 import const
 from typing import List

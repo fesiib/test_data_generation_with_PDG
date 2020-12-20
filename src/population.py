@@ -1,6 +1,6 @@
 from typing import List, Tuple
 from testcase import TestCase
-from customConstraint import CustomConstraint
+from customconstraint import CustomConstraint
 import const
 
 import random
