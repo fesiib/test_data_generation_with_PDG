@@ -11,7 +11,7 @@ from pdg import PDG
 from coverageTable import CoverageTable
 from sourcecode import SourceCode
 from testcase import TestCase
-from Predicate import Predicate
+from predicate import Predicate
 from customConstraint import CustomConstraint
 
 import const
