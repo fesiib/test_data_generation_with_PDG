@@ -19,12 +19,12 @@ class TestCase:
         self.input = input
         self.output = output
         self.test_type = test_type
-        if test_type is not None:
+        if test_type is not None and self.input is None:
             self.generate_test(self.test_type)
 
     def get_input(self) -> List[int]:
         if self.input is None:
-            return list()
+            self.generate_test(self.get_test_type())
         return self.input
 
     def get_output(self) -> List[int]:

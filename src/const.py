@@ -1,6 +1,7 @@
 """
 Constant Values
 """
+import math
 
 DEF_SEED_SIZE = 10
 DEF_POP_SIZE = 100
@@ -9,6 +10,7 @@ DEF_RATE_MUTATION = 0.4
 DEF_MAX_ITER = 100
 DEF_WAIT_ITER = 20
 DEF_DEPENDENCY_MODE = 3
+DEF_INF = math.inf
 
 """
 0 - [int, int]
