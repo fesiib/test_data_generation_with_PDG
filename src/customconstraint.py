@@ -26,5 +26,6 @@ class CustomConstraint:
                 cur_fitness += (test[key] - solution[key]) * (
                     test[key] - solution[key]
                 )
-            fitness = min(fitness, cur_fitness)
+            if fitness > cur_fitness:
+                fitness = cur_fitness
         return fitness

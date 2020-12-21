@@ -3,6 +3,8 @@ from typing import List
 from sourcecode import SourceCode
 from customconstraint import CustomConstraint
 
+import const
+
 import random
 import os
 import uuid
@@ -57,7 +59,7 @@ class TestCase:
     def __generate(self, n: int):
         self.input = list()
         for _ in range(n):
-            self.input.append(random.randint(0, 10000))
+            self.input.append(random.randint(-const.DEF_RNG, const.DEF_RNG))
 
     def execute_test_on(self, source_code: SourceCode):
         path = source_code.create_file()
@@ -73,7 +75,7 @@ class TestCase:
             str_input_data += str(i) + "\n"
 
         process = subprocess.Popen(
-            ["python", path],
+            ["python3", path],
             stdin=subprocess.PIPE,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE

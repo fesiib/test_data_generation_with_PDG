@@ -84,7 +84,6 @@ class Generator:
         return ret_str
 
     def generate_tests(self, source_code: SourceCode):
-        print("started")
         pdg = PDG(source_code)
         ct = CoverageTable(source_code)
 
@@ -174,13 +173,6 @@ class Generator:
 
                 cur_population = next_population
                 ct.update(next_population)
-
-            if target.get_coverage_status() is False:
-                if dependency_mode == self.dependency_mode:
-                    ct.drop_predicate(target)
-                    dependency_mode = 0
-                else:
-                    dependency_mode += 1
             print(
                 "FINISHED FOR TARGET:",
                 targets_cnt,
@@ -189,6 +181,12 @@ class Generator:
                 "#GENERATIONS: ",
                 generations_cnt - before_generations_cnt,
             )
+            if target.get_coverage_status() is False:
+                if dependency_mode == self.dependency_mode:
+                    ct.drop_predicate(target)
+                    dependency_mode = 0
+                else:
+                    dependency_mode += 1
 
         # print(generations_cnt)
         return ct, generations_cnt

@@ -23,7 +23,7 @@ class Population:
         offspring = copy.deepcopy(solution)
         offspring.input[
             random.randint(0, len(solution.input) - 1)
-        ] = random.randint(0, 10000)
+        ] = random.randint(-const.DEF_RNG, const.DEF_RNG)
         offspring.execute_test_on(self.source_code)
         return offspring
 
@@ -64,15 +64,15 @@ class Population:
         return len(self.solutions)
 
     def get_best_by_fitness(self, constraint: CustomConstraint) -> TestCase:
-        best_fitness = const.DEF_INF
-        best = None
+        if len(self.solutions) == 0:
+            raise AssertionError
+        best = self.solutions[0]
+        best_fitness = best.get_fitness(constraint)
         for test in self.solutions:
             current_fitness = test.get_fitness(constraint)
             if current_fitness < best_fitness:
                 best_fitness = current_fitness
                 best = test
-        if best is None:
-            raise AssertionError
         return best
 
     def insert(self, solution: TestCase):
