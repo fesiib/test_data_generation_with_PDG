@@ -88,6 +88,10 @@ def evaluate_all(path: str, test_type):
                                     sep=" ",
                                     end="\n\n"
                                 )
+                                tests = ct.get_tests()
+                                for test in tests:
+                                    print("ok")
+                                    test.to_file("./evaluation/cheburek/")
 
 
 def evaluate_traingle_classification():
@@ -99,4 +103,4 @@ def evaluate_find_max():
 
 
 if __name__ == "__main__":
-    evaluate_find_max()
+    evaluate_traingle_classification()
