@@ -4,6 +4,7 @@ from const import DEF_DOM
 
 domain = DEF_DOM
 
+
 class PDG:
     """
     maps of (Tuple - (List[Tuple], List[Tuple])) because
@@ -15,7 +16,7 @@ class PDG:
 
     def __init__(self, source_code):
         if source_code.code[2:5] == "fin":
-            P8 = (1, 8, "if x > y", True, True)
+            P8 = (1, 8, "if x > y", True, False)
             P9 = (2, 9, "if y > z", True, False)
             P12 = (3, 12, "if x > z", True, False)
             P17 = (4, 17, "if x > z", True, False)
@@ -29,7 +30,7 @@ class PDG:
             }
             self.data_flow = {}
         if source_code.code[2:5] == "tri":
-            P8 = (1, 8, "if i <= 0 or j <= 0 or k <= 0", True, True)
+            P8 = (1, 8, "if i <= 0 or j <= 0 or k <= 0", True, False)
             P13 = (2, 13, "if i == j", True, False)
             P15 = (3, 15, "if i == k", True, False)
             P17 = (4, 17, "if j == k", True, False)
@@ -89,49 +90,121 @@ class PDG:
         c.addVariable("tri", range(0, 4))
         if mode == 1:
             if predicate.program_line == 8:
-                c.addConstraint(lambda i, j, k, tri: i <= 0 or j <= 0 or k <= 0, ("i", "j", "k", "tri"))
-            if predicate.program_line == "13":
-                c.addConstraint(lambda i, j, k, tri: i == j, ("i", "j", "k", "tri"))
-            if predicate.program_line == "15":
-                c.addConstraint(lambda i, j, k, tri: i == k, ("i", "j", "k", "tri"))
-            if predicate.program_line == "17":
-                c.addConstraint(lambda i, j, k, tri: j == k, ("i", "j", "k", "tri"))
-            if predicate.program_line == "20":
-                c.addConstraint(lambda i, j, k, tri: tri == 0, ("i", "j", "k", "tri"))
-            if predicate.program_line == "21":
-                c.addConstraint(lambda i, j, k, tri: i + j < k or j + k < i or k + i < j, ("i", "j", "k", "tri"))
-            if predicate.program_line == "28":
-                c.addConstraint(lambda i, j, k, tri: tri > 3, ("i", "j", "k", "tri"))
-            if predicate.program_line == "30":
-                c.addConstraint(lambda i, j, k, tri: tri == 1 and i + j > k, ("i", "j", "k", "tri"))
-            if predicate.program_line == "32":
-                c.addConstraint(lambda i, j, k, tri: tri == 2 and i + k > j, ("i", "j", "k", "tri"))
-            if predicate.program_line == "34":
-                c.addConstraint(lambda i, j, k, tri: tri == 3 and j + k > i, ("i", "j", "k", "tri"))
-        if mode == 2:
-            if predicate.program_line == "8":
-                c.addConstraint(lambda i, j, k, tri: i <= 0 or j <= 0 or k <= 0, ("i", "j", "k", "tri"))
-            if predicate.program_line == "13":
-                c.addConstraint(lambda i, j, k, tri: i > 0 and j > 0 and k > 0 and i == j, ("i", "j", "k", "tri"))
-            if predicate.program_line == "15":
-                c.addConstraint(lambda i, j, k, tri: i > 0 and j > 0 and k > 0 and i == k, ("i", "j", "k", "tri"))
-            if predicate.program_line == "17":
-                c.addConstraint(lambda i, j, k, tri: i > 0 and j > 0 and k > 0 and j == k, ("i", "j", "k", "tri"))
-            if predicate.program_line == "20":
-                c.addConstraint(lambda i, j, k, tri: i > 0 and j > 0 and k > 0 and tri == 0, ("i", "j", "k", "tri"))
-            if predicate.program_line == "21":
                 c.addConstraint(
-                    lambda i, j, k, tri: i > 0 and j > 0 and k > 0 and tri == 0 and (i + j < k or j + k < i or k + i < j),
-                    ("i", "j", "k", "tri"))
-            if predicate.program_line == "28":
-                c.addConstraint(lambda i, j, k, tri: i > 0 and j > 0 and k > 0 and i == j and j == k and tri > 3,
-                                ("i", "j", "k", "tri"))
-            if predicate.program_line == "30":
-                c.addConstraint(lambda i, j, k, tri: i > 0 and j > 0 and k > 0 and tri == 1 and i + j > k, ("i", "j", "k", "tri"))
-            if predicate.program_line == "32":
-                c.addConstraint(lambda i, j, k, tri: i > 0 and j > 0 and k > 0 and tri == 2 and i + k > j, ("i", "j", "k", "tri"))
-            if predicate.program_line == "34":
-                c.addConstraint(lambda i, j, k, tri: i > 0 and j > 0 and k > 0 and tri == 3 and j + k > i, ("i", "j", "k", "tri"))
+                    lambda i, j, k, tri: i <= 0 or j <= 0 or k <= 0,
+                    ("i", "j", "k", "tri"),
+                )
+            if predicate.program_line == 13:
+                c.addConstraint(
+                    lambda i, j, k, tri: i == j, ("i", "j", "k", "tri")
+                )
+            if predicate.program_line == 15:
+                c.addConstraint(
+                    lambda i, j, k, tri: i == k, ("i", "j", "k", "tri")
+                )
+            if predicate.program_line == 17:
+                c.addConstraint(
+                    lambda i, j, k, tri: j == k, ("i", "j", "k", "tri")
+                )
+            if predicate.program_line == 20:
+                c.addConstraint(
+                    lambda i, j, k, tri: tri == 0, ("i", "j", "k", "tri")
+                )
+            if predicate.program_line == 21:
+                c.addConstraint(
+                    lambda i, j, k, tri: i + j < k or j + k < i or k + i < j,
+                    ("i", "j", "k", "tri"),
+                )
+            if predicate.program_line == 28:
+                c.addConstraint(
+                    lambda i, j, k, tri: tri > 3, ("i", "j", "k", "tri")
+                )
+            if predicate.program_line == 30:
+                c.addConstraint(
+                    lambda i, j, k, tri: tri == 1 and i + j > k,
+                    ("i", "j", "k", "tri"),
+                )
+            if predicate.program_line == 32:
+                c.addConstraint(
+                    lambda i, j, k, tri: tri == 2 and i + k > j,
+                    ("i", "j", "k", "tri"),
+                )
+            if predicate.program_line == 34:
+                c.addConstraint(
+                    lambda i, j, k, tri: tri == 3 and j + k > i,
+                    ("i", "j", "k", "tri"),
+                )
+        if mode == 2:
+            if predicate.program_line == 8:
+                c.addConstraint(
+                    lambda i, j, k, tri: i <= 0 or j <= 0 or k <= 0,
+                    ("i", "j", "k", "tri"),
+                )
+            if predicate.program_line == 13:
+                c.addConstraint(
+                    lambda i, j, k, tri: i > 0 and j > 0 and k > 0 and i == j,
+                    ("i", "j", "k", "tri"),
+                )
+            if predicate.program_line == 15:
+                c.addConstraint(
+                    lambda i, j, k, tri: i > 0 and j > 0 and k > 0 and i == k,
+                    ("i", "j", "k", "tri"),
+                )
+            if predicate.program_line == 17:
+                c.addConstraint(
+                    lambda i, j, k, tri: i > 0 and j > 0 and k > 0 and j == k,
+                    ("i", "j", "k", "tri"),
+                )
+            if predicate.program_line == 20:
+                c.addConstraint(
+                    lambda i, j, k, tri: i > 0 and j > 0 and k > 0 and tri == 0,
+                    ("i", "j", "k", "tri"),
+                )
+            if predicate.program_line == 21:
+                c.addConstraint(
+                    lambda i, j, k, tri: i > 0
+                    and j > 0
+                    and k > 0
+                    and tri == 0
+                    and (i + j < k or j + k < i or k + i < j),
+                    ("i", "j", "k", "tri"),
+                )
+            if predicate.program_line == 28:
+                c.addConstraint(
+                    lambda i, j, k, tri: i > 0
+                    and j > 0
+                    and k > 0
+                    and i == j
+                    and j == k
+                    and tri > 3,
+                    ("i", "j", "k", "tri"),
+                )
+            if predicate.program_line == 30:
+                c.addConstraint(
+                    lambda i, j, k, tri: i > 0
+                    and j > 0
+                    and k > 0
+                    and tri == 1
+                    and i + j > k,
+                    ("i", "j", "k", "tri"),
+                )
+            if predicate.program_line == 32:
+                c.addConstraint(
+                    lambda i, j, k, tri: i > 0
+                    and j > 0
+                    and k > 0
+                    and tri == 2
+                    and i + k > j,
+                    ("i", "j", "k", "tri"),
+                )
+            if predicate.program_line == 34:
+                c.addConstraint(
+                    lambda i, j, k, tri: i > 0
+                    and j > 0
+                    and k > 0
+                    and tri == 3
+                    and j + k > i,
+                    ("i", "j", "k", "tri"),
+                )
         constraint = CustomConstraint(c)
         return constraint
-

@@ -34,6 +34,9 @@ class TestCase:
             raise AssertionError
         return self.output
 
+    def get_values(self) -> List[int]:
+        return self.get_input() + self.get_output()
+
     def get_test_type(self) -> int:
         if self.test_type is None:
             return -1
@@ -112,4 +115,4 @@ class TestCase:
         return input_file
 
     def get_fitness(self, constraint: CustomConstraint) -> float:
-        return constraint.to_fitness(self.output)
+        return constraint.to_fitness(self.get_values())

@@ -57,12 +57,38 @@ class Generator:
         self.test_type = test_type
         self.validate_global_variables()
 
+    def __str__(self):
+        ret_str = (
+            "SEED_SIZE: "
+            + str(self.seed_size)
+            + "\n"
+            + "POP_SIZE: "
+            + str(self.population_size)
+            + "\n"
+            + "CROSSOVER RATE: "
+            + str(self.rate_crossover)
+            + "\n"
+            + "MUTATION RATE: "
+            + str(self.rate_mutation)
+            + "\n"
+            + "MAX_ITER: "
+            + str(self.max_iter)
+            + "\n"
+            + "DEPENDENCY MODE: "
+            + str(self.dependency_mode)
+            + "\n"
+            + "TEST TYPE: "
+            + str(self.test_type)
+            + "\n"
+        )
+        return ret_str
+
     def generate_tests(self, source_code: SourceCode):
         pdg = PDG(source_code)
         ct = CoverageTable(source_code)
 
         # Random Seeding CT
-        random_seed = Population()
+        random_seed = Population(source_code)
         random_seed.initial_population(self.seed_size, self.test_type)
         ct.update(random_seed)
 
@@ -70,17 +96,26 @@ class Generator:
 
         # for Statistics
         generations_cnt = 0
+        targets_cnt = 0
 
         while True:
             target: Predicate = ct.get_target_branch()
-
             if target is None:
                 break
+
+            targets_cnt += 1
+            print(
+                "STARTING FOR TARGET:",
+                targets_cnt,
+                "with dependency_mode",
+                dependency_mode,
+            )
+            before_generations_cnt = generations_cnt
 
             constraint: CustomConstraint = pdg.predicate_to_constraint(
                 target, dependency_mode
             )
-            cur_population = Population()
+            cur_population = Population(source_code)
             cur_population.initial_population(
                 self.population_size, self.test_type
             )
@@ -95,9 +130,9 @@ class Generator:
                 iter_cnt <= self.max_iter
                 and target.get_coverage_status() is False
             ):
+                print("T" + str(targets_cnt) + ":", "G", generations_cnt - before_generations_cnt, "COV", ct.calculate_coverage())
                 iter_cnt += 1
-
-                next_population = Population()
+                next_population = Population(source_code)
 
                 # Best Solution Survives
                 best_solution: TestCase = cur_population.get_best_by_fitness(
@@ -109,8 +144,8 @@ class Generator:
                     parent1, parent2 = cur_population.tournament_selection(
                         constraint
                     )
-                    offspring1: TestCase = parent1.copy()
-                    offspring2: TestCase = parent2.copy()
+                    offspring1: TestCase = parent1
+                    offspring2: TestCase = parent2
                     if random.random() <= self.rate_crossover:
                         (offspring1, offspring2) = cur_population.crossover(
                             parent1, parent2
@@ -146,6 +181,14 @@ class Generator:
                     dependency_mode = 0
                 else:
                     dependency_mode += 1
+            print(
+                "FINISHED FOR TARGET:",
+                targets_cnt,
+                "with dependency_mode",
+                dependency_mode,
+                "#GENERATIONS: ",
+                generations_cnt - before_generations_cnt,
+            )
 
         # print(generations_cnt)
         return ct, generations_cnt

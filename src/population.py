@@ -8,30 +8,39 @@ import copy
 
 
 class Population:
-    def __init__(self, solutions: List[TestCase] = None):
+    def __init__(self, source_code, solutions: List[TestCase] = []):
         self.solutions = solutions
+        self.source_code = source_code
 
     def initial_population(self, population_size: int, test_type: int):
         self.solutions = []
         for _ in range(population_size):
             test = TestCase(test_type=test_type)
+            test.execute_test_on(self.source_code)
             self.solutions.append(test)
 
     def mutate(self, solution: TestCase, mode: int) -> TestCase:
         offspring = copy.deepcopy(solution)
-        offspring[random.randint(0, len(solution) - 1)] = random.randint(
-            0, 10000
-        )
-
+        offspring.input[
+            random.randint(0, len(solution.input) - 1)
+        ] = random.randint(0, 10000)
+        offspring.execute_test_on(self.source_code)
         return offspring
 
     def crossover(
         self, parent_1: TestCase, parent_2: TestCase
     ) -> Tuple[TestCase]:
-        crossover_point = random.choice(range(len(parent_1)))
-        offspring_1 = parent_1[:crossover_point] + parent_2[crossover_point:]
-        offspring_2 = parent_2[:crossover_point] + parent_1[crossover_point:]
-
+        crossover_point = random.choice(range(len(parent_1.input)))
+        offspring_1 = TestCase(
+            input=parent_1.input[:crossover_point]
+            + parent_2.input[crossover_point:]
+        )
+        offspring_2 = TestCase(
+            input=parent_2.input[:crossover_point]
+            + parent_1.input[crossover_point:]
+        )
+        offspring_1.execute_test_on(self.source_code)
+        offspring_2.execute_test_on(self.source_code)
         return offspring_1, offspring_2
 
     def tournament_selection(
@@ -39,8 +48,8 @@ class Population:
     ) -> Tuple[TestCase]:
         parents = [None, None]
         for i in range(2):
-            candidate_1, candidate_2 = random.choices(self.solutions)
-            if candidate_1.get_fitness(constraint) < candidate_2.to_fitness(
+            candidate_1, candidate_2 = random.choices(self.solutions, k=2)
+            if candidate_1.get_fitness(constraint) < candidate_2.get_fitness(
                 constraint
             ):
                 parent = candidate_1
@@ -48,7 +57,8 @@ class Population:
                 parent = candidate_2
             parents[i] = parent
 
-        return tuple(parents)
+        ret = tuple(parents)
+        return ret
 
     def get_size(self) -> int:
         return len(self.solutions)
@@ -61,8 +71,10 @@ class Population:
             if current_fitness < best_fitness:
                 best_fitness = current_fitness
                 best = test
-
+        if best is None:
+            raise AssertionError
         return best
 
     def insert(self, solution: TestCase):
+        solution.execute_test_on(self.source_code)
         self.solutions.append(solution)

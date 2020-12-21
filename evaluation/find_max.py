@@ -1,23 +1,27 @@
 # find_max
-import sys
 
-x = int(sys.argv[1])
-y = int(sys.argv[2])
-z = int(sys.argv[3])
+def main():
+    x = int(input())
+    y = int(input())
+    z = int(input())
 
-if x > y:
-    if y > z:
-        print(x)
-    else:
-        if x > z:
+    if x > y:
+        if y > z:
             print(x)
         else:
-            print(z)
-else:
-    if x > z:
-        print(y)
+            if x > z:
+                print(x)
+            else:
+                print(z)
     else:
-        if y > z:
+        if x > z:
             print(y)
         else:
-            print(z)
+            if y > z:
+                print(y)
+            else:
+                print(z)
+
+
+if __name__ == "__main__":
+    main()

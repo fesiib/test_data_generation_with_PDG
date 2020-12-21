@@ -14,13 +14,14 @@ def evaluate_iters(path: str, test_type):
                     dependency_mode=dependency_mode,
                     test_type=test_type,
                 )
+                print(str(generator))
                 (ct, generations_cnt) = generator.generate_tests(code)
                 print(
-                    str(generator),
                     "->",
-                    ct.calculate_coverage(),
-                    generations_cnt,
+                    "COV", ct.calculate_coverage(),
+                    "GS", generations_cnt,
                     sep=" ",
+                    end="\n\n"
                 )
 
 
@@ -40,13 +41,14 @@ def evaluate_GA(path: str, test_type):
                     rate_mutation=rate_mutation,
                     test_type=test_type,
                 )
+                print(str(generator))
                 (ct, generations_cnt) = generator.generate_tests(code)
                 print(
-                    str(generator),
                     "->",
-                    ct.calculate_coverage(),
-                    generations_cnt,
+                    "COV", ct.calculate_coverage(),
+                    "GS", generations_cnt,
                     sep=" ",
+                    end="\n\n"
                 )
 
 
@@ -74,16 +76,17 @@ def evaluate_all(path: str, test_type):
                                     dependency_mode,
                                     test_type,
                                 )
+                                print(str(generator))
                                 (
                                     ct,
                                     generations_cnt,
                                 ) = generator.generate_tests(code)
                                 print(
-                                    str(generator),
                                     "->",
-                                    ct.calculate_coverage(),
-                                    generations_cnt,
+                                    "COV", ct.calculate_coverage(),
+                                    "GS", generations_cnt,
                                     sep=" ",
+                                    end="\n\n"
                                 )
 
 

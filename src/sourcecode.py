@@ -12,7 +12,6 @@ class SourceCode:
         self.path = path
         if self.path is not None:
             self.read_file()
-            print(self.code)
         self.created_by_program = False
 
     def read_file(self):

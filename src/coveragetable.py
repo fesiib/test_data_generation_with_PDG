@@ -83,13 +83,10 @@ class CoverageTable:
                 metrics[t] = (ease, minus_improved)
         if len(metrics) > 0:
             sorted_predicates = sorted(metrics, key=metrics.get)
-            return Predicate(
-                sorted_predicates[0][0],
-                sorted_predicates[0][1],
-                sorted_predicates[0][2],
-                sorted_predicates[0][3],
-                sorted_predicates[0][4],
-            )
+            for predicate in self.predicates:
+                if predicate.number == sorted_predicates[0][0]:
+                    return predicate
+            raise AssertionError
         else:
             return None
 
@@ -102,7 +99,7 @@ class CoverageTable:
         for test in population.solutions:
             for predicate in self.predicates:
                 if self.pdg.predicate_to_constraint(predicate, 2).is_satisfied(
-                    test.input
+                    test.get_values()
                 ):
                     self.pdg.update(predicate)
                     self.predicates = []
@@ -120,7 +117,7 @@ class CoverageTable:
         for predicate in self.predicates:
             if predicate.get_coverage_status():
                 covered += 1
-        return float(covered) / float(len(self.predicates)) * 100
+        return (float(covered) / float(len(self.predicates))) * 100.0
 
     def __str__(self):
         ret_str = ""
