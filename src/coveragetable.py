@@ -1,5 +1,6 @@
 from predicate import Predicate
 from pdg import PDG
+import copy
 
 """
 TODO: change drop predicate
@@ -47,6 +48,8 @@ class CoverageTable:
         return ease
 
     def calculate_improved_ease(self, predicate):
+        old_pdg = copy.deepcopy(self.pdg)
+        old_predicates = copy.deepcopy(self.predicates)
         if predicate.coverage_status:
             return 0
         # calculate previous total ease
@@ -65,12 +68,14 @@ class CoverageTable:
         total_new_ease = 0
         for p in self.predicates:
             total_new_ease += self.calculate_ease(p)
+        self.pdg = old_pdg
+        self.predicates = old_predicates
         return total_ease - total_new_ease
 
     def get_target_branch(self):
         metrics = {}
         for predicate in self.predicates:
-            if not predicate.coverage_status and not predicate.dropped:
+            if predicate.coverage_status == False and predicate.dropped == False:
                 ease = self.calculate_ease(predicate)
                 minus_improved = -self.calculate_improved_ease(predicate)
                 t = (
@@ -81,6 +86,7 @@ class CoverageTable:
                     predicate.coverage_status,
                 )
                 metrics[t] = (ease, minus_improved)
+
         if len(metrics) > 0:
             sorted_predicates = sorted(metrics, key=metrics.get)
             for predicate in self.predicates:
@@ -101,7 +107,7 @@ class CoverageTable:
                 if predicate.coverage_status == False and self.pdg.predicate_to_constraint(predicate, 2).is_satisfied(
                     test.get_values()
                 ):
-                    print("updated")
+                    # print("updated")
                     self.pdg.update(predicate)
                     new_predicate = predicate
                     new_predicate.coverage_status = True
@@ -115,12 +121,12 @@ class CoverageTable:
     def calculate_coverage(self):
         covered = 0
         for predicate in self.predicates:
-            if predicate.get_coverage_status():
+            if predicate.coverage_status:
                 covered += 1
         return (float(covered) / float(len(self.predicates))) * 100.0
 
     def __str__(self):
         ret_str = ""
         for predicate in self.predicates:
-            ret_str += str(predicate)
+            ret_str += str(predicate) + " | "
         return ret_str

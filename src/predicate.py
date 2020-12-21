@@ -4,6 +4,7 @@ class Predicate:
     predicate = ""
     branch = True
     coverage_status = False
+    dropped = False
 
     def __init__(
         self, number, program_line, predicate, branch, coverage_status

@@ -84,6 +84,7 @@ class Generator:
         return ret_str
 
     def generate_tests(self, source_code: SourceCode):
+        print("started")
         pdg = PDG(source_code)
         ct = CoverageTable(source_code)
 
@@ -111,7 +112,6 @@ class Generator:
                 dependency_mode,
             )
             before_generations_cnt = generations_cnt
-
             constraint: CustomConstraint = pdg.predicate_to_constraint(
                 target, dependency_mode
             )

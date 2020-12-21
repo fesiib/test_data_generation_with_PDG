@@ -28,6 +28,7 @@ class TestCase:
         return self.input
 
     def get_output(self) -> List[int]:
+        return [0]
         if self.output is None:
             if self.input is None:
                 return list()
@@ -72,10 +73,10 @@ class TestCase:
             str_input_data += str(i) + "\n"
 
         process = subprocess.Popen(
-            ["python3", path],
+            ["python", path],
             stdin=subprocess.PIPE,
             stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
+            stderr=subprocess.PIPE
         )
 
         stdout, stderr = process.communicate(
