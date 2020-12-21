@@ -102,7 +102,7 @@ class CoverageTable:
         for test in population.solutions:
             for predicate in self.predicates:
                 if self.pdg.predicate_to_constraint(predicate, 2).is_satisfied(
-                    test.values
+                    test.input
                 ):
                     self.pdg.update(predicate)
                     self.predicates = []
