@@ -13,7 +13,6 @@ class CustomConstraint:
         return self.to_fitness(values) == 0.0
 
     def to_fitness(self, values):
-        print(values)
         test = {}
         cnt = 0
         for var in self.constraint._variables.keys():

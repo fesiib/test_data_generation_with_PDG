@@ -10,7 +10,7 @@ TODO: change drop predicate
 class CoverageTable:
     predicates = []
     pdg = {}
-    tests = {}
+    tests = []
 
     def __init__(self, source_code):
         self.predicates = []
@@ -98,16 +98,16 @@ class CoverageTable:
     def update(self, population):
         for test in population.solutions:
             for predicate in self.predicates:
-                if self.pdg.predicate_to_constraint(predicate, 2).is_satisfied(
+                if predicate.coverage_status == False and self.pdg.predicate_to_constraint(predicate, 2).is_satisfied(
                     test.get_values()
                 ):
+                    print("updated")
                     self.pdg.update(predicate)
-                    self.predicates = []
-                    for key in self.pdg.control_flow:
-                        self.predicates.append(
-                            Predicate(key[0], key[1], key[2], key[3], key[4])
-                        )
-                    self.tests[predicate] = test
+                    new_predicate = predicate
+                    new_predicate.coverage_status = True
+                    self.predicates.remove(predicate)
+                    self.predicates.append(new_predicate)
+                    self.tests.append(test)
 
     def get_tests(self):
         return self.tests
